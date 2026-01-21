@@ -12,42 +12,63 @@ export const CrashGraph: React.FC<CrashGraphProps> = ({ multiplier, phase, timeE
   const height = 400;
   const padding = 40;
 
+  // Dynamic scaling based on current multiplier
+  const maxDisplayMultiplier = useMemo(() => {
+    return Math.max(multiplier * 1.3, 2); // Always show 30% headroom above current
+  }, [multiplier]);
+
+  const maxDisplayTime = useMemo(() => {
+    return Math.max(timeElapsed * 1.3, 5000); // Always show 30% headroom
+  }, [timeElapsed]);
+
   // Generate points for the line
   const pathData = useMemo(() => {
     if (phase === 'betting') return '';
 
     const points: string[] = [];
-    const steps = Math.min(timeElapsed / 50, 200); // One point per 50ms
+    const steps = Math.min(Math.floor(timeElapsed / 50), 200);
     
     for (let i = 0; i <= steps; i++) {
       const t = (i / Math.max(steps, 1)) * timeElapsed;
       const m = Math.pow(Math.E, 0.1 * (t / 1000));
       
-      // Scale to graph coordinates
-      const x = padding + (t / 10000) * (width - padding * 2);
-      const maxMultiplier = Math.max(multiplier, 2);
-      const y = height - padding - ((m - 1) / (maxMultiplier - 1)) * (height - padding * 2);
+      // Scale to graph coordinates with dynamic scaling
+      const xRatio = t / maxDisplayTime;
+      const x = padding + xRatio * (width - padding * 2);
+      
+      const yRatio = (m - 1) / (maxDisplayMultiplier - 1);
+      const y = height - padding - yRatio * (height - padding * 2);
+      
+      // Clamp to chart bounds
+      const clampedX = Math.max(padding, Math.min(x, width - padding));
+      const clampedY = Math.max(padding, Math.min(y, height - padding));
       
       if (i === 0) {
-        points.push(`M ${x} ${y}`);
+        points.push(`M ${clampedX} ${clampedY}`);
       } else {
-        points.push(`L ${x} ${y}`);
+        points.push(`L ${clampedX} ${clampedY}`);
       }
     }
 
     return points.join(' ');
-  }, [timeElapsed, multiplier, phase]);
+  }, [timeElapsed, phase, maxDisplayMultiplier, maxDisplayTime]);
 
-  // Current point position
+  // Current point position - always stays on chart
   const currentPoint = useMemo(() => {
     if (phase === 'betting') return null;
     
-    const x = padding + (timeElapsed / 10000) * (width - padding * 2);
-    const maxMultiplier = Math.max(multiplier, 2);
-    const y = height - padding - ((multiplier - 1) / (maxMultiplier - 1)) * (height - padding * 2);
+    const xRatio = timeElapsed / maxDisplayTime;
+    const x = padding + xRatio * (width - padding * 2);
     
-    return { x: Math.min(x, width - padding), y: Math.max(y, padding) };
-  }, [timeElapsed, multiplier, phase]);
+    const yRatio = (multiplier - 1) / (maxDisplayMultiplier - 1);
+    const y = height - padding - yRatio * (height - padding * 2);
+    
+    // Clamp to chart bounds
+    return { 
+      x: Math.max(padding, Math.min(x, width - padding)), 
+      y: Math.max(padding, Math.min(y, height - padding)) 
+    };
+  }, [timeElapsed, multiplier, phase, maxDisplayMultiplier, maxDisplayTime]);
 
   const isCrashed = phase === 'crashed';
 
