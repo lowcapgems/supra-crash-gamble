@@ -2,66 +2,63 @@
 @tailwind components;
 @tailwind utilities;
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap');
 
 @layer base {
   :root {
-    --background: 220 20% 6%;
-    --foreground: 0 0% 95%;
-
-    --card: 220 18% 10%;
-    --card-foreground: 0 0% 95%;
-
-    --popover: 220 18% 10%;
-    --popover-foreground: 0 0% 95%;
-
+    --background: 220 20% 4%;
+    --foreground: 60 30% 96%;
+    
+    --card: 220 18% 8%;
+    --card-foreground: 60 30% 96%;
+    
+    --popover: 220 18% 8%;
+    --popover-foreground: 60 30% 96%;
+    
     --primary: 142 76% 50%;
-    --primary-foreground: 0 0% 0%;
-
-    --secondary: 220 16% 16%;
-    --secondary-foreground: 0 0% 95%;
-
-    --muted: 220 14% 14%;
+    --primary-foreground: 220 20% 4%;
+    
+    --secondary: 280 100% 65%;
+    --secondary-foreground: 60 30% 96%;
+    
+    --muted: 220 15% 15%;
     --muted-foreground: 220 10% 55%;
-
-    --accent: 142 76% 50%;
-    --accent-foreground: 0 0% 0%;
-
-    --destructive: 0 72% 55%;
-    --destructive-foreground: 0 0% 100%;
-
-    --border: 220 14% 18%;
-    --input: 220 14% 18%;
+    
+    --accent: 35 100% 55%;
+    --accent-foreground: 220 20% 4%;
+    
+    --destructive: 0 85% 60%;
+    --destructive-foreground: 60 30% 96%;
+    
+    --border: 220 15% 18%;
+    --input: 220 15% 18%;
     --ring: 142 76% 50%;
-
+    
     --radius: 0.75rem;
-
-    /* Custom game colors */
-    --crash-red: 0 85% 55%;
-    --crash-green: 142 76% 50%;
-    --crash-yellow: 45 100% 60%;
-    --crash-blue: 210 100% 60%;
-    --crash-purple: 270 80% 60%;
-
+    
+    /* Custom tokens for meme trading */
+    --gem-green: 142 76% 50%;
+    --gem-red: 0 85% 60%;
+    --gem-purple: 280 100% 65%;
+    --gem-gold: 35 100% 55%;
+    --gem-cyan: 180 100% 50%;
+    
     /* Gradients */
-    --gradient-game: linear-gradient(135deg, hsl(220 20% 8%) 0%, hsl(220 22% 4%) 100%);
-    --gradient-card: linear-gradient(180deg, hsl(220 18% 12%) 0%, hsl(220 18% 8%) 100%);
-    --gradient-win: linear-gradient(135deg, hsl(142 76% 40%) 0%, hsl(142 76% 55%) 100%);
-    --gradient-lose: linear-gradient(135deg, hsl(0 72% 45%) 0%, hsl(0 72% 60%) 100%);
-    --gradient-multiplier: linear-gradient(90deg, hsl(142 76% 50%) 0%, hsl(142 100% 70%) 100%);
-
+    --gradient-gem: linear-gradient(135deg, hsl(280 100% 65%), hsl(180 100% 50%));
+    --gradient-gold: linear-gradient(135deg, hsl(35 100% 55%), hsl(35 100% 70%));
+    --gradient-game: linear-gradient(135deg, hsl(220 20% 4%) 0%, hsl(220 25% 2%) 100%);
+    
     /* Shadows */
     --shadow-glow-green: 0 0 40px hsl(142 76% 50% / 0.3);
-    --shadow-glow-red: 0 0 40px hsl(0 72% 55% / 0.3);
-    --shadow-card: 0 8px 32px hsl(0 0% 0% / 0.4);
+    --shadow-glow-purple: 0 0 40px hsl(280 100% 65% / 0.3);
 
-    --sidebar-background: 220 18% 10%;
-    --sidebar-foreground: 0 0% 95%;
+    --sidebar-background: 220 18% 8%;
+    --sidebar-foreground: 60 30% 96%;
     --sidebar-primary: 142 76% 50%;
-    --sidebar-primary-foreground: 0 0% 0%;
-    --sidebar-accent: 220 16% 16%;
-    --sidebar-accent-foreground: 0 0% 95%;
-    --sidebar-border: 220 14% 18%;
+    --sidebar-primary-foreground: 220 20% 4%;
+    --sidebar-accent: 220 15% 15%;
+    --sidebar-accent-foreground: 60 30% 96%;
+    --sidebar-border: 220 15% 18%;
     --sidebar-ring: 142 76% 50%;
   }
 }
@@ -70,10 +67,10 @@
   * {
     @apply border-border;
   }
-
+  
   body {
-    @apply bg-background text-foreground font-sans antialiased;
-    font-family: 'Inter', sans-serif;
+    @apply bg-background text-foreground antialiased;
+    font-family: 'Space Grotesk', sans-serif;
     background: var(--gradient-game);
     min-height: 100vh;
   }
@@ -83,82 +80,39 @@
   }
 }
 
-@layer components {
-  .game-card {
-    background: var(--gradient-card);
-    box-shadow: var(--shadow-card);
-  }
-
-  .multiplier-text {
-    background: var(--gradient-multiplier);
+@layer utilities {
+  .text-gradient-gem {
+    background: var(--gradient-gem);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
   }
-
-  .crashed-text {
-    background: var(--gradient-lose);
+  
+  .text-gradient-gold {
+    background: var(--gradient-gold);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
   }
-
+  
+  .bg-gradient-gem {
+    background: var(--gradient-gem);
+  }
+  
   .glow-green {
-    box-shadow: var(--shadow-glow-green);
+    box-shadow: 0 0 20px hsl(var(--gem-green) / 0.4);
+  }
+  
+  .glow-purple {
+    box-shadow: 0 0 20px hsl(var(--gem-purple) / 0.4);
   }
 
-  .glow-red {
-    box-shadow: var(--shadow-glow-red);
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
   }
-
-  .game-line {
-    stroke: url(#lineGradient);
-    stroke-width: 3;
-    fill: none;
-    filter: drop-shadow(0 0 8px hsl(142 76% 50% / 0.6));
+  
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
   }
-
-  .game-line-crashed {
-    stroke: hsl(var(--crash-red));
-    filter: drop-shadow(0 0 8px hsl(0 72% 55% / 0.6));
-  }
-
-  .pulse-green {
-    animation: pulseGreen 2s ease-in-out infinite;
-  }
-
-  .pulse-red {
-    animation: pulseRed 1s ease-in-out infinite;
-  }
-}
-
-@keyframes pulseGreen {
-  0%, 100% {
-    box-shadow: 0 0 20px hsl(142 76% 50% / 0.3);
-  }
-  50% {
-    box-shadow: 0 0 40px hsl(142 76% 50% / 0.5);
-  }
-}
-
-@keyframes pulseRed {
-  0%, 100% {
-    box-shadow: 0 0 20px hsl(0 72% 55% / 0.3);
-  }
-  50% {
-    box-shadow: 0 0 40px hsl(0 72% 55% / 0.6);
-  }
-}
-
-@keyframes countUp {
-  from {
-    transform: scale(1);
-  }
-  to {
-    transform: scale(1.02);
-  }
-}
-
-.counting {
-  animation: countUp 0.1s ease-in-out infinite alternate;
 }
